@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Word Count</title>
+
+<style>
+* {
+	padding: 0;
+	font-family: sans-serif;
+}
+
+textarea {
+	width: 90vw;
+	height: 10vh;
+}
+
+span {
+	font-weight: bold;
+	color: green;
+}
+
+span.bad {
+	color: red;
+}
+</style>
+
+<h1>Word Counter</h1>
+<h2>There are <span id=result>0</span> words.</h2>
+<textarea id=t placeholder="paste your words here"></textarea>
+
+<script>
+	function update(e) {
+		const words = t.value.split(" ");
+		const filtered = words.filter( word => word!="" );
+		window.result.textContent = filtered.length;
+	}
+
+	t.addEventListener("input", update);
+
+</script>
