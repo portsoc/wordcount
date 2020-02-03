@@ -30,7 +30,7 @@
 
 <script>
 	function update(e) {
-		const words = t.value.trim().match(/\w+(-\w+)*|\w+/g);
+		const words = t.value.trim().match(/\w+(-\w+)*/g);
 		window.result.textContent = words.length;
 	}
 
