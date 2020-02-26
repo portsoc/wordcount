@@ -26,23 +26,12 @@ span.bad {
 
 <h1>Word Counter</h1>
 <h2>There are <span id=result>0</span> words.</h2>
-<textarea id=t placeholder="paste your words here"></textarea>
+<textarea id=t placeholder="paste your words here" autofocus></textarea>
 
 <script>
 	function update(e) {
-		if(t.value != ""){
-			const words = t.value.trim().match(/\s+/g);
-			if(words != null && words.length > 0){
-				const filtered = words.filter( word => word.length > 0 );
-				window.result.textContent = filtered.length + 1;
-			}
-			else {
-				window.result.textContent = 1;
-			}
-		}
-		else {
-			window.result.textContent = 0;
-		}
+		const words = t.value.trim().match(/\S+/g);
+		window.result.textContent = words.length;
 	}
 
 	t.addEventListener("input", update);
