@@ -30,8 +30,14 @@ span.bad {
 
 <script>
 	function update(e) {
-		const words = t.value.trim().match(/\S+/g);
-		window.result.textContent = words.length;
+		if(t.value != "") {
+			const words = t.value.trim().match(/\S+/g);
+			window.result.textContent = words.length;
+		}
+		else {
+			window.result.textContent = "0";
+		}
+		
 	}
 
 	t.addEventListener("input", update);
