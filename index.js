@@ -1,12 +1,17 @@
-const droptext = "drop text now!";
-const placeholder = "paste or drag words here to count them";
-const enter = e => el.t.placeholder = droptext;
-const end = e => el.t.placeholder = placeholder;
-const over = e => e.preventDefault();
+const el = { t: '#t', result: '#result' };
 
-const drop = async e => {
+function leave(e) {
+  document.body.classList.remove("over");
+};
+
+function over(e) {
   e.preventDefault();
-  el.t.placeholder = placeholder;
+  document.body.classList.add("over");
+};
+
+
+async function drop(e) {
+  e.preventDefault();
 
   const droppedType = e.dataTransfer.types[0];
   const handlerFunc = handlers[droppedType];
@@ -15,7 +20,7 @@ const drop = async e => {
   }
 };
 
-function update(e) {
+function updateWordCount(e) {
   const words = t.value.trim().match(/\S+/g);
   el.result.textContent = words ? words.length : 0
 }
@@ -32,27 +37,35 @@ function loadFile(file) {
 };
 
 const handlers = {
-  "Files": async edt => {
-    const f = edt.items[0].getAsFile();
-    el.t.value = await loadFile(f);
-    update();
-  },
-  "text/plain": edt => {
-    el.t.value = edt.getData("text/plain");
-    update();
-  }
+  "Files": handleFileDrag,
+  "text/plain": handleTextDrag,
 };
 
+async function handleFileDrag(dataTransfer) {
+  const f = dataTransfer.items[0].getAsFile();
+  el.t.value = await loadFile(f);
+  updateWordCount();
+}
+
+function handleTextDrag(dataTransfer) {
+  el.t.value = dataTransfer.getData("text/plain");
+  updateWordCount();
+}
+
+function setupEl() {
+  for (const key of Object.keys(el)) {
+    el[key] = document.querySelector(el[key]);
+  };
+}
+
 function init() {
-  const el = {
-    t: document.querySelector("#t"),
-    result: document.querySelector("#result")
-  }
-	el.t.addEventListener("input", update);
-  el.t.addEventListener("dragenter", enter);
-  el.t.addEventListener("dragover", over);
-  el.t.addEventListener("drop", drop);
-  el.t.addEventListener("dragend", end);
+  setupEl();
+  
+	el.t.addEventListener("input", updateWordCount);
+  document.body.addEventListener("dragover", over);
+  document.body.addEventListener("drop", drop);
+  document.body.addEventListener("drop", leave);
+  document.body.addEventListener("dragleave", leave);
 }
 
 window.addEventListener("load", init);
