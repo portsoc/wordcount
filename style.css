@@ -1,3 +1,21 @@
+:root {
+  --c1: #E4D6E3;
+  --c2: #000;
+  --c3: #FFF;
+  --c4: #888;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c1: #224422;
+    --c2: #DDD;
+    --c3: #333;
+    --c4: #888;
+    }
+}
+
+
 * {
   box-sizing: border-box;
 	padding: 0rem;
@@ -9,29 +27,35 @@ body {
   flex-direction: column;
 	font-family: sans-serif;
   height: 100vh;
-  background: #9B9;
+  background: var(--c1);
 }
 
 body > * {
   margin: 1rem;
 }
 
+h1 {
+  font-weight: normal;
+  color: var(--c2);
+}
+
 textarea {
   flex: 1 1 auto;
   resize: none;
   padding: 1rem;
-  border: green solid medium;
-  border-radius: 0.5rem;
+  border: var(--c2) solid thin;
+  border-radius: 0.25rem;
   outline: none;
+  background: var(--c3);
+  color: var(--c2);
 }
 
 span {
 	font-weight: bold;
-	color: green;
 }
 
 .over textarea {
-  background: #888;
+  background: var(--c4);
 }
 
 .over:after {
@@ -42,6 +66,6 @@ span {
   top: 50%;
   width: 100%;
   text-align: center;
-  color: white;
+  color: var(--c3);
   font-size: 3em;
 }
