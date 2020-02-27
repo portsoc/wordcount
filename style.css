@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+	padding: 0rem;
+  margin: 0rem;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+	font-family: sans-serif;
+  height: 100vh;
+  background: #9B9;
+}
+
+body > * {
+  margin: 1rem;
+}
+
+textarea {
+  flex: 1 1 auto;
+  resize: none;
+  padding: 1rem;
+  border: green solid medium;
+  border-radius: 0.5rem;
+  outline: none;
+}
+
+span {
+	font-weight: bold;
+	color: green;
+}
