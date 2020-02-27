@@ -1,80 +1,14 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="style.css">
+<script src="index.js"></script>
 <title>Word Count</title>
 
-<style>
-* {
-  box-sizing: border-box;
-	padding: 0rem;
-  margin: 0rem;
-}
+<body data-drop-placeholder='drop text here!'>
 
-body {
-  display: flex;
-  flex-direction: column;
-	font-family: sans-serif;
-  height: 100vh;
-}
+  <h1>Word Counter: <span id="result">0</span> words.</h1>
+  
+  <textarea id="t" placeholder="paste or drag words here to count them" autofocus></textarea>
 
-body > * {
-  margin: 1rem;
-}
-
-textarea {
-  flex: 1 1 auto;
-  resize: none;
-  padding: 1rem;
-  border: green solid medium;
-  border-radius: 0.5rem;
-  outline: none;
-}
-
-span {
-	font-weight: bold;
-	color: green;
-}
-
-</style>
-
-<h1>Word Counter: <span id=result>0</span> words.</h1>
-<textarea id=t placeholder="paste or drag words here to count them" autofocus></textarea>
-
-<script>
-
-function init() {
-
-  const droptext = "drop text now!";
-  const placeholder = "paste or drag words here to count them";
-
-  const el = {
-    t: document.querySelector("#t"),
-    result: document.querySelector("#result")
-  }
-
-	function update(e) {
-		const words = t.value.trim().match(/\S+/g);
-		el.result.textContent = words ? words.length : 0
-  }
-
-  const enter = e => el.t.placeholder = droptext;
-  const end = e => el.t.placeholder = placeholder;
-  const over = e => e.preventDefault();
-  const drop = e => {
-    e.preventDefault();
-    console.log("dropped");
-    el.t.placeholder = placeholder;
-    el.t.textContent = e.dataTransfer.getData("text/plain");
-    update();
-  };
-
-
-	el.t.addEventListener("input", update);
-  el.t.addEventListener("dragenter", enter);
-  el.t.addEventListener("dragover", over);
-  el.t.addEventListener("drop", drop);
-  el.t.addEventListener("dragend", end);
-}
-
-window.addEventListener("load", init);
-</script>
+</body>
