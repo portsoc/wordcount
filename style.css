@@ -29,3 +29,19 @@ span {
 	font-weight: bold;
 	color: green;
 }
+
+.over textarea {
+  background: #888;
+}
+
+.over:after {
+  content: attr(data-drop-placeholder);
+
+  display: block;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 3em;
+}
