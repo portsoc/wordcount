@@ -1,0 +1,29 @@
+{
+  "name": "wordcount",
+  "version": "1.0.0",
+  "description": "An online wordcount tool.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/portsoc/wordcount.git"
+  },
+  "keywords": [
+    "wordcount",
+    "count",
+    "words",
+    "length",
+    "document"
+  ],
+  "author": "Rich Boakes \"rjb@port.ac.uk\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/portsoc/wordcount/issues"
+  },
+  "homepage": "https://github.com/portsoc/wordcount#readme",
+  "devDependencies": {
+    "eslint-config-portsoc": "github:portsoc/eslint-config-portsoc"
+  }
+}
