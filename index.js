@@ -2,12 +2,12 @@ const el = { t: '#t', result: '#result' };
 
 function leave(e) {
   document.body.classList.remove("over");
-};
+}
 
 function over(e) {
   e.preventDefault();
   document.body.classList.add("over");
-};
+}
 
 
 async function drop(e) {
@@ -60,7 +60,7 @@ function setupEl() {
 
 function init() {
   setupEl();
-  
+
 	el.t.addEventListener("input", updateWordCount);
   document.body.addEventListener("dragover", over);
   document.body.addEventListener("drop", drop);
