@@ -1,12 +1,12 @@
 const el = { t: '#t', result: '#result' };
 
 function leave(e) {
-  document.body.classList.remove("over");
+  document.body.classList.remove('over');
 }
 
 function over(e) {
   e.preventDefault();
-  document.body.classList.add("over");
+  document.body.classList.add('over');
 }
 
 
@@ -18,13 +18,14 @@ async function drop(e) {
   if (handlerFunc) {
     await handlerFunc(e.dataTransfer);
   }
-};
-
-function updateWordCount(e) {
-  const words = t.value.trim().match(/\S+/g);
-  el.result.textContent = words ? words.length : 0
 }
 
+function updateWordCount(e) {
+  const words = el.t.value.trim().match(/\S+/g);
+  el.result.textContent = words ? words.length : 0;
+}
+
+/* global FileReader */
 function loadFile(file) {
   const fr = new FileReader();
   return new Promise((resolve, reject) => {
@@ -34,11 +35,11 @@ function loadFile(file) {
     };
     fr.readAsText(file);
   });
-};
+}
 
 const handlers = {
-  "Files": handleFileDrag,
-  "text/plain": handleTextDrag,
+  'Files': handleFileDrag,
+  'text/plain': handleTextDrag,
 };
 
 async function handleFileDrag(dataTransfer) {
@@ -48,24 +49,24 @@ async function handleFileDrag(dataTransfer) {
 }
 
 function handleTextDrag(dataTransfer) {
-  el.t.value = dataTransfer.getData("text/plain");
+  el.t.value = dataTransfer.getData('text/plain');
   updateWordCount();
 }
 
 function setupEl() {
   for (const key of Object.keys(el)) {
     el[key] = document.querySelector(el[key]);
-  };
+  }
 }
 
 function init() {
   setupEl();
 
-	el.t.addEventListener("input", updateWordCount);
-  document.body.addEventListener("dragover", over);
-  document.body.addEventListener("drop", drop);
-  document.body.addEventListener("drop", leave);
-  document.body.addEventListener("dragleave", leave);
+  el.t.addEventListener('input', updateWordCount);
+  document.body.addEventListener('dragover', over);
+  document.body.addEventListener('drop', drop);
+  document.body.addEventListener('drop', leave);
+  document.body.addEventListener('dragleave', leave);
 }
 
-window.addEventListener("load", init);
+window.addEventListener('load', init);
