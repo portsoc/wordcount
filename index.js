@@ -24,7 +24,7 @@ async function drop(e) {
       }
       break;
     case 'text/plain':
-    case: 'text/_moz_htmlcontext':
+    case 'text/_moz_htmlcontext':
       string += handleTextDrag(e.dataTransfer);
       break;
     default:
