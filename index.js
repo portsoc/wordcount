@@ -14,10 +14,26 @@ async function drop(e) {
   e.preventDefault();
 
   const droppedType = e.dataTransfer.types[0];
-  const handlerFunc = handlers[droppedType];
-  if (handlerFunc) {
-    await handlerFunc(e.dataTransfer);
+  let string = '';
+
+  switch (droppedType) {
+    case 'Files':
+    case 'application/x-moz-file':
+      for (const file of e.dataTransfer.items) {
+        string += await handleFileDrag(file);
+      }
+      break;
+    case 'text/plain':
+    case: 'text/_moz_htmlcontext':
+      string += handleTextDrag(e.dataTransfer);
+      break;
+    default:
+      throw Error(`Unhandled type: ${droppedType}`)
+      break;
   }
+
+  el.t.value = string;
+  updateWordCount();
 }
 
 function updateWordCount(e) {
@@ -37,20 +53,13 @@ function loadFile(file) {
   });
 }
 
-const handlers = {
-  'Files': handleFileDrag,
-  'text/plain': handleTextDrag,
-};
-
-async function handleFileDrag(dataTransfer) {
-  const f = dataTransfer.items[0].getAsFile();
-  el.t.value = await loadFile(f);
-  updateWordCount();
+async function handleFileDrag(item) {
+  const f = item.getAsFile();
+  return await loadFile(f);
 }
 
 function handleTextDrag(dataTransfer) {
-  el.t.value = dataTransfer.getData('text/plain');
-  updateWordCount();
+  return dataTransfer.getData('text/plain');
 }
 
 function setupEl() {
