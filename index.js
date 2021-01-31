@@ -19,7 +19,7 @@ async function drop(e) {
   switch (droppedType) {
     case 'Files':
     case 'application/x-moz-file':
-      for (const file of e.dataTransfer.items) {
+      for (const file of e.dataTransfer.files) {
         string += await handleFileDrag(file);
       }
       break;
@@ -53,9 +53,8 @@ function loadFile(file) {
   });
 }
 
-async function handleFileDrag(item) {
-  const f = item.getAsFile();
-  return await loadFile(f);
+async function handleFileDrag(file) {
+  return await loadFile(file);
 }
 
 function handleTextDrag(dataTransfer) {
