@@ -28,8 +28,7 @@ async function drop(e) {
       string += handleTextDrag(e.dataTransfer);
       break;
     default:
-      throw Error(`Unhandled type: ${droppedType}`)
-      break;
+      throw Error(`Unhandled type: ${droppedType}`);
   }
 
   el.t.value = string;
