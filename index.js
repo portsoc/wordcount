@@ -10,29 +10,19 @@ function over(e) {
 }
 
 
+/**
+ * @param {DragEvent} e
+ */
 async function drop(e) {
   e.preventDefault();
 
-  const droppedType = e.dataTransfer.types[0];
-  let string = '';
-
-  switch (droppedType) {
-    case 'Files':
-    case 'application/x-moz-file':
-      for (const file of e.dataTransfer.files) {
-        string += await handleFileDrag(file);
-      }
-      break;
-    case 'text/plain':
-    case 'text/_moz_htmlcontext':
-      string += handleTextDrag(e.dataTransfer);
-      break;
-    default:
-      break;
+  const regexString = Object.keys(handlers).join('|');
+  const droppedType = e.dataTransfer.types.join(' ').match(regexString);
+  const handlerFunc = handlers[droppedType];
+  if (handlerFunc) {
+    el.t.value = await handlerFunc(e.dataTransfer);
+    updateWordCount();
   }
-
-  el.t.value = string;
-  updateWordCount();
 }
 
 function updateWordCount(e) {
@@ -40,9 +30,11 @@ function updateWordCount(e) {
   el.result.textContent = words ? words.length : 0;
 }
 
-/* global FileReader */
+/**
+ * @param {File} file
+ */
 function loadFile(file) {
-  const fr = new FileReader();
+  const fr = new window.FileReader();
   return new Promise((resolve, reject) => {
     fr.onerror = reject;
     fr.onload = () => {
@@ -52,10 +44,25 @@ function loadFile(file) {
   });
 }
 
-async function handleFileDrag(file) {
-  return await loadFile(file);
+const handlers = {
+  Files: handleFileDrag,
+  'text/plain': handleTextDrag,
+};
+
+/**
+ * @param {DataTransfer} dataTransfer
+ * @return {string}
+ */
+async function handleFileDrag(dataTransfer) {
+  const f = Array.from(dataTransfer.files).map(f => loadFile(f));
+  const fileContents = await Promise.all(f);
+  return fileContents.join('\n');
 }
 
+/**
+ * @param {DataTransfer} dataTransfer
+ * @returns {string}
+ */
 function handleTextDrag(dataTransfer) {
   return dataTransfer.getData('text/plain');
 }
