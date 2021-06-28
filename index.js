@@ -10,14 +10,10 @@ function over(e) {
 }
 
 
-/**
- * @param {DragEvent} e
- */
 async function drop(e) {
   e.preventDefault();
 
-  const regexString = Object.keys(handlers).join('|');
-  const droppedType = e.dataTransfer.types.join(' ').match(regexString);
+  const droppedType = e.dataTransfer.types.find(value => Object.keys(handlers).includes(value));
   const handlerFunc = handlers[droppedType];
   if (handlerFunc) {
     el.t.value = await handlerFunc(e.dataTransfer);
@@ -30,9 +26,6 @@ function updateWordCount(e) {
   el.result.textContent = words ? words.length : 0;
 }
 
-/**
- * @param {File} file
- */
 function loadFile(file) {
   const fr = new window.FileReader();
   return new Promise((resolve, reject) => {
@@ -49,20 +42,12 @@ const handlers = {
   'text/plain': handleTextDrag,
 };
 
-/**
- * @param {DataTransfer} dataTransfer
- * @return {string}
- */
 async function handleFileDrag(dataTransfer) {
   const f = Array.from(dataTransfer.files).map(f => loadFile(f));
   const fileContents = await Promise.all(f);
   return fileContents.join('\n');
 }
 
-/**
- * @param {DataTransfer} dataTransfer
- * @returns {string}
- */
 function handleTextDrag(dataTransfer) {
   return dataTransfer.getData('text/plain');
 }
