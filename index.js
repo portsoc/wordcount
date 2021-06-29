@@ -13,10 +13,11 @@ function over(e) {
 async function drop(e) {
   e.preventDefault();
 
-  const droppedType = e.dataTransfer.types[0];
+  const droppedType = e.dataTransfer.types.find(value => Object.keys(handlers).includes(value));
   const handlerFunc = handlers[droppedType];
   if (handlerFunc) {
-    await handlerFunc(e.dataTransfer);
+    el.t.value = await handlerFunc(e.dataTransfer);
+    updateWordCount();
   }
 }
 
@@ -25,9 +26,8 @@ function updateWordCount(e) {
   el.result.textContent = words ? words.length : 0;
 }
 
-/* global FileReader */
 function loadFile(file) {
-  const fr = new FileReader();
+  const fr = new window.FileReader();
   return new Promise((resolve, reject) => {
     fr.onerror = reject;
     fr.onload = () => {
@@ -38,19 +38,18 @@ function loadFile(file) {
 }
 
 const handlers = {
-  'Files': handleFileDrag,
+  Files: handleFileDrag,
   'text/plain': handleTextDrag,
 };
 
 async function handleFileDrag(dataTransfer) {
-  const f = dataTransfer.items[0].getAsFile();
-  el.t.value = await loadFile(f);
-  updateWordCount();
+  const f = Array.from(dataTransfer.files).map(f => loadFile(f));
+  const fileContents = await Promise.all(f);
+  return fileContents.join('\n');
 }
 
 function handleTextDrag(dataTransfer) {
-  el.t.value = dataTransfer.getData('text/plain');
-  updateWordCount();
+  return dataTransfer.getData('text/plain');
 }
 
 function setupEl() {
